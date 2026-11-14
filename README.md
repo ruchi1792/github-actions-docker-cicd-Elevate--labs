@@ -1,133 +1,202 @@
 # 🚀 CI/CD Pipeline with GitHub Actions, Docker & Kubernetes
 
 ![CI/CD](https://img.shields.io/badge/CI%2FCD-Automated-success?style=for-the-badge)
-![Docker](https://img.shields.io/badge/Docker-Containerization-blue?style=for-the-badge&logo=docker)
-![Kubernetes](https://img.shields.io/badge/Kubernetes-Orchestration-326CE5?style=for-the-badge&logo=kubernetes)
-![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-Automation-2088FF?style=for-the-badge&logo=githubactions)
+![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-Workflow-blue?style=for-the-badge&logo=githubactions)
+![Docker](https://img.shields.io/badge/Docker-Containerization-2496ED?style=for-the-badge&logo=docker)
+![Kubernetes](https://img.shields.io/badge/Kubernetes-Deployment-326CE5?style=for-the-badge&logo=kubernetes)
+![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python)
+![Flask](https://img.shields.io/badge/Flask-3.1.1-black?style=for-the-badge&logo=flask)
 
-## 📌 Project Overview
+A practical end-to-end **CI/CD automation project** that demonstrates how to test, build, publish, and deploy a Python Flask application using GitHub Actions, Docker Hub, and a local Kubernetes cluster with Minikube.
 
-This project demonstrates an automated **CI/CD (Continuous Integration and Continuous Deployment) pipeline** using GitHub Actions, Docker, Docker Hub, and Kubernetes (Minikube).
+The pipeline automatically runs tests, builds and pushes a Docker image, and deploys the updated application to Minikube whenever code is pushed to the `main` branch.
 
-The pipeline automatically tests a Python Flask application, builds a Docker image, pushes the image to Docker Hub, and deploys the latest application version to a local Kubernetes cluster.
+---
 
-A self-hosted GitHub Actions runner is used to deploy the application to Minikube running locally through Docker Desktop.
+## 📌 Table of Contents
 
-☁️ **No cloud infrastructure is required!**
+- [Project Overview](#-project-overview)
+- [Project Objectives](#-project-objectives)
+- [Architecture](#-architecture)
+- [Technology Stack](#-technology-stack)
+- [Project Structure](#-project-structure)
+- [Application Features](#-application-features)
+- [CI/CD Pipeline Workflow](#-cicd-pipeline-workflow)
+- [Docker Configuration](#-docker-configuration)
+- [Kubernetes Deployment](#-kubernetes-deployment)
+- [Local Setup and Execution](#-local-setup-and-execution)
+- [Verification](#-verification)
+- [Project Screenshots](#-project-screenshots)
+- [GitHub and Docker Hub](#-github-and-docker-hub)
+- [Key Learnings](#-key-learnings)
+
+---
+
+## 📖 Project Overview
+
+The objective of this project is to implement an automated CI/CD pipeline for a containerized Flask application without depending on a cloud Kubernetes service.
+
+The pipeline uses:
+
+- **GitHub Actions** for continuous integration and delivery.
+- **Pytest** for automated application testing.
+- **Docker** for containerizing the Flask application.
+- **Docker Hub** for storing and distributing Docker images.
+- **Self-hosted GitHub Actions Runner** for local deployment execution.
+- **Minikube** for running Kubernetes locally.
+- **Kubernetes Deployment and Service** for application orchestration and access.
+
+The deployment process is automated after a successful build and test process.
 
 ## 🎯 Project Objectives
 
-- ⚙️ Automate Python application testing using GitHub Actions.
-- 🐳 Build Docker images automatically.
-- 📦 Push Docker images to Docker Hub.
-- ☸️ Deploy applications automatically to Kubernetes.
-- 🖥️ Use a self-hosted GitHub Actions runner for local deployment.
-- 🔍 Verify application health and deployment status.
+- Implement Continuous Integration using GitHub Actions.
+- Automate Python application testing using Pytest.
+- Build Docker images automatically.
+- Push Docker images to Docker Hub.
+- Configure a self-hosted GitHub Actions runner.
+- Deploy the application to a local Minikube cluster.
+- Manage application replicas using Kubernetes Deployments.
+- Expose the application through a Kubernetes NodePort Service.
+- Verify application health and deployment status.
 
-## 🏗️ Project Architecture
+---
+
+## 🏗️ Architecture
 
 ```text
-           👨‍💻 Developer
-                 |
-                 v
-          📂 GitHub Repository
-                 |
-                 v
-          ⚙️ GitHub Actions
-                 |
-                 v
-          🧪 Run Python Tests
-                 |
-                 v
-          🐳 Build Docker Image
-                 |
-                 v
-          📦 Push to Docker Hub
-                 |
-                 v
-          🖥️ Self-Hosted Runner
-                 |
-                 v
-          ☸️ Local Minikube
-                 |
-                 v
-          🚀 Kubernetes Deployment
-                 |
-                 v
-             🟢 2 App Pods
-                 |
-                 v
-          🌐 Kubernetes Service
-                 |
-                 v
-          🐍 Flask Application
+              Developer
+                  |
+                  | Git Push
+                  v
+             GitHub Repository
+                  |
+                  v
+          GitHub Actions Workflow
+                  |
+                  v
+          +-------------------+
+          |   CI: Run Tests   |
+          |      Pytest       |
+          +-------------------+
+                  |
+                  v
+          +-------------------+
+          | Build Docker Image|
+          |     Docker        |
+          +-------------------+
+                  |
+                  v
+             Docker Hub
+                  |
+                  v
+          Self-Hosted Runner
+                  |
+                  v
+             Minikube
+                  |
+                  v
+          Kubernetes Deployment
+                  |
+                  v
+             Kubernetes Pods
+                  |
+                  v
+          Kubernetes NodePort
+                  |
+                  v
+          Flask Application
 ```
 
-## 🛠️ Technologies Used
+### 🔄 Pipeline Flow
+
+1. Developer pushes code to GitHub.
+2. GitHub Actions triggers the workflow.
+3. Python dependencies are installed.
+4. Pytest executes the application tests.
+5. Docker image is built after successful tests.
+6. Docker image is pushed to Docker Hub.
+7. Self-hosted runner executes the deployment job.
+8. Kubernetes Deployment updates the application image.
+9. Kubernetes verifies the rollout.
+10. Application availability is tested.
+
+---
+
+## 🛠️ Technology Stack
 
 | Technology | Purpose |
 |---|---|
-| 🐍 Python 3.12 | Application development |
-| 🌶️ Flask | Web application framework |
-| 🧪 Pytest | Automated testing |
-| 🐳 Docker | Containerization |
-| 🖥️ Docker Desktop | Local container runtime |
-| 📦 Docker Hub | Docker image registry |
-| ⚙️ GitHub Actions | CI/CD automation |
-| 🖥️ Self-hosted Runner | Local deployment automation |
-| ☸️ Kubernetes | Container orchestration |
-| 🚀 Minikube | Local Kubernetes cluster |
-| 🔧 kubectl | Kubernetes management |
-| 🐧 Ubuntu WSL | Development environment |
+| Python 3.12 | Application development |
+| Flask 3.1.1 | Web application framework |
+| Pytest 8.3.5 | Automated testing |
+| Git & GitHub | Version control and source code hosting |
+| GitHub Actions | CI/CD automation |
+| Docker | Application containerization |
+| Docker Hub | Container image registry |
+| Docker Compose | Local container management |
+| Kubernetes | Container orchestration |
+| Minikube | Local Kubernetes cluster |
+| kubectl | Kubernetes cluster management |
+| WSL Ubuntu | Linux development environment |
+
+---
 
 ## 📁 Project Structure
 
 ```text
 github-actions-docker-cicd/
 │
-├── 📂 app/
+├── .github/
+│   └── workflows/
+│       └── ci.yml              # GitHub Actions CI/CD workflow
+│
+├── app/
 │   ├── __init__.py
-│   └── main.py
+│   └── main.py                 # Flask application
 │
-├── 📂 tests/
-│   └── test_app.py
+├── tests/
+│   └── test_app.py             # Automated application tests
 │
-├── 📂 k8s/
-│   ├── deployment.yaml
-│   └── service.yaml
+├── k8s/
+│   ├── deployment.yaml         # Kubernetes Deployment
+│   └── service.yaml            # Kubernetes NodePort Service
 │
-├── 📂 .github/
-│   └── 📂 workflows/
-│       └── ci.yml
+├── screenshots/                # Project screenshots
 │
-├── 🐳 Dockerfile
-├── 🚫 .dockerignore
-├── 🐳 docker-compose.yml
-├── 📋 requirements.txt
-└── 📖 README.md
+├── .dockerignore
+├── .gitignore
+├── Dockerfile                  # Docker image configuration
+├── docker-compose.yml          # Local container configuration
+├── requirements.txt            # Python dependencies
+└── README.md
 ```
 
-## 🐍 Application Details
+---
 
-The project uses a Python Flask application with three endpoints.
+## ⚙️ Application Features
 
-### 🏠 1. Home Endpoint
+The Flask application provides three HTTP endpoints.
 
-```http
-GET /
+| Endpoint | Method | Description |
+|---|---|---|
+| `/` | GET | Returns application information |
+| `/health` | GET | Returns application health status |
+| `/version` | GET | Returns application version information |
+
+### Example API Responses
+
+**GET /**
+
+```json
+{
+  "application": "CI/CD Demo Application",
+  "message": "Welcome! Application is running successfully.",
+  "status": "Running"
+}
 ```
 
-Returns application information and a welcome message.
-
-### ❤️ 2. Health Endpoint
-
-```http
-GET /health
-```
-
-Checks whether the application is healthy.
-
-**Expected Response:**
+**GET /health**
 
 ```json
 {
@@ -135,15 +204,7 @@ Checks whether the application is healthy.
 }
 ```
 
-### 🔖 3. Version Endpoint
-
-```http
-GET /version
-```
-
-Returns application version and deployment information.
-
-**Expected Response:**
+**GET /version**
 
 ```json
 {
@@ -152,195 +213,131 @@ Returns application version and deployment information.
 }
 ```
 
-## ⚙️ CI/CD Pipeline Workflow
+---
 
-The GitHub Actions workflow is configured in:
+## 🔁 CI/CD Pipeline Workflow
 
-```text
-.github/workflows/ci.yml
-```
+The workflow is configured in:
 
-The pipeline contains three jobs.
+`.github/workflows/ci.yml`
 
-### 🧪 Job 1: Run Python Tests
+### Job 1: Run Python Tests
 
-- Checks out the repository.
+- Checks out the GitHub repository.
 - Sets up Python 3.12.
-- Installs application dependencies.
+- Installs project dependencies.
 - Executes automated tests using Pytest.
 
-### 🐳 Job 2: Build and Push Docker Image
+### Job 2: Build and Push Docker Image
 
-- Runs after successful Python tests.
-- Sets up Docker Buildx.
-- Logs in to Docker Hub using GitHub Secrets.
+Runs after successful tests.
+
+- Configures Docker Buildx.
+- Authenticates with Docker Hub using GitHub Secrets.
 - Builds the Docker image.
-- Pushes the image to Docker Hub with `latest` and commit SHA tags.
+- Pushes two image tags:
+  - `latest`
+  - Git commit SHA
 
-📦 **Docker Hub Repository:**
+### Job 3: Deploy to Local Minikube
 
-https://hub.docker.com/r/ruchiamey3117/cicd-app
+Runs after the Docker image has been pushed.
 
-### ☸️ Job 3: Deploy to Local Minikube
-
-- Runs on the self-hosted GitHub Actions runner.
+- Uses the self-hosted Linux runner.
 - Verifies Kubernetes connectivity.
-- Updates the Kubernetes Deployment with the newly published Docker image.
-- Waits for the deployment rollout.
-- Verifies Kubernetes Deployments, Pods, and Services.
+- Updates the Kubernetes Deployment with the new image.
+- Checks rollout status.
+- Verifies Deployments, Pods, and Services.
 
-🚀 The deployment job runs only after the Docker image has been successfully pushed from a push to the `main` branch.
+### 🔐 GitHub Repository Secrets
 
-## 🔐 GitHub Secrets Configuration
+The following repository secrets are configured:
 
-The following repository secrets are configured under:
-
-**GitHub Repository → Settings → Secrets and variables → Actions**
-
-| Secret Name | Description |
+| Secret | Purpose |
 |---|---|
 | `DOCKER_USERNAME` | Docker Hub username |
 | `DOCKER_TOKEN` | Docker Hub access token |
 
-🔒 These secrets allow GitHub Actions to authenticate with Docker Hub without exposing credentials in the workflow file.
+Secrets are stored in GitHub repository settings and are not included in the source code.
 
-## ☸️ Kubernetes Configuration
+---
 
-Kubernetes manifests are stored in the `k8s/` directory.
+## 🐳 Docker Configuration
 
-### 🚀 Deployment
+The application is packaged into a Docker image using the project Dockerfile.
 
-File: `k8s/deployment.yaml`
-
-The Deployment:
-
-- Creates two application replicas.
-- Uses the Docker Hub application image.
-- Exposes container port `5000`.
-- Uses `Always` as the image pull policy.
-
-### 🌐 Service
-
-File: `k8s/service.yaml`
-
-The Service:
-
-- Uses NodePort service type.
-- Exposes application port `5000`.
-- Uses NodePort `30007`.
-- Routes traffic to application Pods.
-
-## 📋 Prerequisites
-
-Install and configure the following tools:
-
-- 🐙 Git
-- 🐍 Python 3.12
-- 🐳 Docker Desktop
-- 🐧 Ubuntu on WSL
-- ☸️ Minikube
-- 🔧 kubectl
-- 🐙 GitHub account
-- 📦 Docker Hub account
-
-⚠️ Docker Desktop and Minikube must be running for local Kubernetes deployment.
-
-The self-hosted runner must also be online.
-
-## 💻 Running the Project Locally
-
-### Step 1️⃣: Clone the Repository
-
-```bash
-git clone https://github.com/ruchi1792/github-actions-docker-cicd-Elevate--labs.git
-```
-
-### Step 2️⃣: Navigate to the Project
-
-```bash
-cd github-actions-docker-cicd-Elevate--labs
-```
-
-### Step 3️⃣: Install Python Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### Step 4️⃣: Run Automated Tests
-
-```bash
-python -m pytest -v
-```
-
-### Step 5️⃣: Build the Docker Image
+### Build Docker Image
 
 ```bash
 docker build -t cicd-app .
 ```
 
-### Step 6️⃣: Run the Docker Container
+### Run Docker Container
 
 ```bash
-docker run -d -p 5000:5000 --name cicd-app cicd-app
+docker run -d -p 5000:5000 --name cicd-app-local cicd-app
 ```
 
-🌐 Access the application:
+### Verify Container
 
-```text
-http://localhost:5000
+```bash
+docker ps
 ```
+
+### Docker Hub Repository
+
+Published image:
+
+`ruchiamey3117/cicd-app`
+
+[View Docker Hub Repository](https://hub.docker.com/r/ruchiamey3117/cicd-app)
+
+---
 
 ## ☸️ Kubernetes Deployment
 
-### 1️⃣ Start Minikube
+The application is deployed to a local Minikube Kubernetes cluster.
+
+### Start Minikube
 
 ```bash
 minikube start --driver=docker
 ```
 
-### 2️⃣ Check the Cluster
-
-```bash
-kubectl get nodes
-```
-
-### 3️⃣ Apply Kubernetes Manifests
+### Apply Kubernetes Manifests
 
 ```bash
 kubectl apply -f k8s/deployment.yaml
 kubectl apply -f k8s/service.yaml
 ```
 
-### 4️⃣ Check Deployments
+### Verify Deployment
 
 ```bash
 kubectl get deployments
-```
-
-### 5️⃣ Check Pods
-
-```bash
 kubectl get pods
-```
-
-### 6️⃣ Check Services
-
-```bash
 kubectl get services
 ```
 
-## 🌐 Accessing the Application
+### Deployment Configuration
 
-Forward the Kubernetes Service to local port `5002`:
+- Deployment name: `cicd-app`
+- Desired replicas: `2`
+- Container port: `5000`
+- Service type: `NodePort`
+- NodePort: `30007`
+
+### Access the Application
+
+Start port forwarding:
 
 ```bash
 kubectl port-forward service/cicd-app-service 5002:5000
 ```
 
-⚠️ Keep the port-forward terminal running.
+Keep this command running in the terminal.
 
-Open another terminal and test the endpoints:
+Open another terminal and test:
 
 ```bash
 curl http://127.0.0.1:5002/
@@ -348,76 +345,186 @@ curl http://127.0.0.1:5002/health
 curl http://127.0.0.1:5002/version
 ```
 
-## 📊 Project Verification Results
+---
 
-The completed project was successfully tested.
+## 🧪 Local Setup and Execution
 
-| Component | Result |
-|---|---|
-| 🧪 Python automated tests | ✅ Successful |
-| 🐳 Docker image build | ✅ Successful |
-| 📦 Docker Hub image push | ✅ Successful |
-| ⚙️ GitHub Actions CI pipeline | ✅ Successful |
-| 🖥️ Self-hosted runner | ✅ Successful |
-| ☸️ Minikube deployment | ✅ Successful |
-| 🚀 Kubernetes replicas | ✅ 2/2 Ready |
-| 🟢 Application Pods | ✅ 2 Running |
-| ❤️ Application health endpoint | ✅ Healthy |
-| 🔖 Version endpoint | ✅ Successful |
+### Prerequisites
 
-### 🏆 GitHub Actions Pipeline Results
+Install the following tools:
 
-All three pipeline jobs completed successfully:
+- Git
+- Python 3.12
+- Docker Desktop
+- Docker Compose
+- kubectl
+- Minikube
 
-1. 🧪 Run Python Tests — **Passed**
-2. 🐳 Build and Push Docker Image — **Passed**
-3. ☸️ Deploy to Local Minikube — **Passed**
+### 1. Clone Repository
 
-⏱️ Total execution time for the successful workflow run: approximately **1 minute and 17 seconds**.
+```bash
+git clone https://github.com/ruchi1792/github-actions-docker-cicd-Elevate--labs.git
+```
 
-## 📸 Project Screenshots
+### 2. Navigate to Project
 
-Project screenshots are collected separately as implementation evidence.
+```bash
+cd github-actions-docker-cicd-Elevate--labs
+```
 
-Recommended screenshots:
+### 3. Install Dependencies
 
-1. 📂 GitHub repository overview.
-2. ⚙️ GitHub Actions successful pipeline.
-3. 🧪 Python automated test results.
-4. 🐳 Docker image build and push.
-5. 📦 Docker Hub image tags.
-6. ☸️ Kubernetes deployment and Pods.
-7. 🌐 Kubernetes Service.
-8. 🔍 Application endpoint testing.
+```bash
+python3 -m pip install -r requirements.txt
+```
 
-## 🔗 Repository Information
+### 4. Run Tests
 
-🐙 **GitHub Repository:**
+```bash
+python3 -m pytest -v
+```
 
-https://github.com/ruchi1792/github-actions-docker-cicd-Elevate--labs
+### 5. Build Docker Image
 
-🐳 **Docker Hub Repository:**
+```bash
+docker build -t cicd-app .
+```
 
-https://hub.docker.com/r/ruchiamey3117/cicd-app
+### 6. Start Minikube
 
-## 🎓 Conclusion
+```bash
+minikube start --driver=docker
+```
 
-This project demonstrates a complete automated CI/CD pipeline using GitHub Actions, Docker, Docker Hub, and Kubernetes.
+### 7. Deploy Application
 
-It automates application testing, Docker image creation, image publishing, and deployment to a local Minikube cluster using a self-hosted GitHub Actions runner.
+```bash
+kubectl apply -f k8s/
+```
 
-The project demonstrates practical experience with:
+### 8. Verify Kubernetes Resources
 
-- ⚙️ CI/CD automation
-- 🐳 Docker containerization
-- ☸️ Kubernetes orchestration
-- 🔄 Automated deployment
-- 🖥️ Self-hosted GitHub Actions runners
-- 🧪 Software testing
-- 🐧 Linux and WSL environments
-
-🚀 **Project Status: Successfully Completed**
+```bash
+kubectl get deployments
+kubectl get pods
+kubectl get services
+```
 
 ---
 
-⭐ If you find this project useful, feel free to explore the repository and learn from the implementation!
+## ✅ Verification
+
+The project pipeline was successfully tested with the following results:
+
+| Component | Verification |
+|---|---|
+| Python application | Running |
+| Pytest | 3 tests passed |
+| GitHub Actions CI | Successful |
+| Docker image build | Successful |
+| Docker Hub push | Successful |
+| Self-hosted runner | Connected |
+| Minikube cluster | Running |
+| Kubernetes Deployment | 2/2 replicas ready |
+| Kubernetes Pods | 2 Pods running |
+| Kubernetes Service | NodePort configured |
+| Flask endpoints | Successfully responding |
+
+---
+
+## 📸 Project Screenshots
+
+The following screenshots demonstrate the implementation and successful execution of the CI/CD pipeline.
+
+### 1. GitHub Repository Overview
+
+Shows the project repository, source code, configuration files, and project structure.
+
+![GitHub Repository](screenshots/01-github-repository.png)
+
+### 2. GitHub Actions – Successful CI/CD Pipeline
+
+Demonstrates the successful execution of all three workflow jobs: testing, Docker build and push, and Kubernetes deployment.
+
+![GitHub Actions Pipeline](screenshots/02-github-actions-success.png)
+
+### 3. Python Automated Testing
+
+Shows the Pytest execution results and successful application test cases.
+
+![Python Test Results](screenshots/03-python-tests.png)
+
+### 4. Docker Image Build and Push
+
+Demonstrates the Docker image build process and successful publishing to Docker Hub.
+
+![Docker Build and Push](screenshots/04-docker-build-push.png)
+
+### 5. Docker Hub Repository
+
+Shows the published Docker image and available image tags.
+
+![Docker Hub Repository](screenshots/05-docker-hub.png)
+
+### 6. Kubernetes Deployment and Pods
+
+Shows the Kubernetes Deployment and the two running application Pods in Minikube.
+
+![Kubernetes Deployment and Pods](screenshots/06-kubernetes-pods.png)
+
+### 7. Kubernetes Service
+
+Demonstrates the Kubernetes NodePort Service configuration used to expose the application.
+
+![Kubernetes Service](screenshots/07-kubernetes-service.png)
+
+### 8. Flask Application Running
+
+Shows the successful responses from the Flask application endpoints.
+
+![Flask Application Responses](screenshots/08-application-running.png)
+
+---
+
+## 🔗 GitHub and Docker Hub
+
+**GitHub Repository**
+
+[github.com/ruchi1792/github-actions-docker-cicd-Elevate--labs](https://github.com/ruchi1792/github-actions-docker-cicd-Elevate--labs)
+
+**Docker Hub Repository**
+
+[hub.docker.com/r/ruchiamey3117/cicd-app](https://hub.docker.com/r/ruchiamey3117/cicd-app)
+
+---
+
+## 📚 Key Learnings
+
+Through this project, I gained practical experience in:
+
+- Designing automated CI/CD workflows.
+- Implementing continuous integration with GitHub Actions.
+- Writing and executing Python unit tests.
+- Containerizing applications using Docker.
+- Publishing Docker images to Docker Hub.
+- Configuring GitHub self-hosted runners.
+- Deploying applications to Kubernetes.
+- Managing Kubernetes Deployments, Pods, and Services.
+- Automating local Kubernetes deployments.
+- Troubleshooting CI/CD and container deployment issues.
+
+---
+
+## 🎓 Project Conclusion
+
+This project demonstrates an end-to-end CI/CD implementation using GitHub Actions, Docker, Docker Hub, and Kubernetes with Minikube.
+
+The automated pipeline successfully tests the Flask application, builds and publishes Docker images, and deploys the updated application to a local Kubernetes cluster.
+
+It provides practical experience with DevOps automation, containerization, and Kubernetes deployment without requiring a cloud-hosted Kubernetes environment.
+
+**Project Status: Successfully Implemented and Verified.**
+
+---
+
+⭐ If you find this project useful, consider giving the repository a star!
