@@ -63,3 +63,30 @@ jobs:
           tags: |
             ruchiamey3117/cicd-app:latest
             ruchiamey3117/cicd-app:${{ github.sha }}
+
+  deploy:
+    name: Deploy to Local Minikube
+    runs-on: [self-hosted, Linux, X64, local-deploy]
+    needs: build-and-push
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Verify Kubernetes connection
+        run: |
+          kubectl config current-context
+          kubectl get nodes
+
+      - name: Deploy new Docker image
+        run: |
+          kubectl set image deployment/cicd-app \
+            cicd-app=ruchiamey3117/cicd-app:${{ github.sha }}
+
+      - name: Verify deployment rollout
+        run: |
+          kubectl rollout status deployment/cicd-app --timeout=180s
+
+      - name: Verify running pods
+        run: |
+          kubectl get deployments
+          kubectl get pods
+          kubectl get services
