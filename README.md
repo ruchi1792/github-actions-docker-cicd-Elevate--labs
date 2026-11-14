@@ -432,58 +432,33 @@ The project pipeline was successfully tested with the following results:
 
 ---
 
-## 📸 Project Screenshots
-
-The following screenshots demonstrate the implementation and successful execution of the CI/CD pipeline.
+## ## 📸 Project Screenshots
 
 ### 1. GitHub Repository Overview
+Click the image to view the repository.
 
-Shows the project repository, source code, configuration files, and project structure.
-
-![GitHub Repository](screenshots/01-github-repository.png)
+[![GitHub Repository](screenshots/01-github-repository.png)](screenshots/01-github-repository.png)
 
 ### 2. GitHub Actions – Successful CI/CD Pipeline
+[![GitHub Actions Pipeline](screenshots/02-github-actions-success.png)](screenshots/02-github-actions-success.png)
 
-Demonstrates the successful execution of all three workflow jobs: testing, Docker build and push, and Kubernetes deployment.
-
-![GitHub Actions Pipeline](screenshots/02-github-actions-success.png)
-
-### 3. Python Automated Testing
-
-Shows the Pytest execution results and successful application test cases.
-
-![Python Test Results](screenshots/03-python-tests.png)
+### 3. Python Automated Test Results
+[![Python Tests](screenshots/03-python-tests.png)](screenshots/03-python-tests.png)
 
 ### 4. Docker Image Build and Push
-
-Demonstrates the Docker image build process and successful publishing to Docker Hub.
-
-![Docker Build and Push](screenshots/04-docker-build-push.png)
+[![Docker Build and Push](screenshots/04-docker-build-push.png)](screenshots/04-docker-build-push.png)
 
 ### 5. Docker Hub Repository
+[![Docker Hub](screenshots/05-docker-hub.png)](screenshots/05-docker-hub.png)
 
-Shows the published Docker image and available image tags.
+### 6. Kubernetes Deployment and Running Pods
+[![Kubernetes Pods](screenshots/06-kubernetes-pods.png)](screenshots/06-kubernetes-pods.png)
 
-![Docker Hub Repository](screenshots/05-docker-hub.png)
+### 7. Kubernetes NodePort Service
+[![Kubernetes Service](screenshots/07-kubernetes-service.png)](screenshots/07-kubernetes-service.png)
 
-### 6. Kubernetes Deployment and Pods
-
-Shows the Kubernetes Deployment and the two running application Pods in Minikube.
-
-![Kubernetes Deployment and Pods](screenshots/06-kubernetes-pods.png)
-
-### 7. Kubernetes Service
-
-Demonstrates the Kubernetes NodePort Service configuration used to expose the application.
-
-![Kubernetes Service](screenshots/07-kubernetes-service.png)
-
-### 8. Flask Application Running
-
-Shows the successful responses from the Flask application endpoints.
-
-![Flask Application Responses](screenshots/08-application-running.png)
-
+### 8. Flask Application – API Responses
+[![Flask Application](screenshots/08-application-running.png)](screenshots/08-application-running.png)
 ---
 
 ## 🔗 GitHub and Docker Hub
